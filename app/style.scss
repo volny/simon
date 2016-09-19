@@ -1,8 +1,26 @@
-$font-stack:    Helvetica, sans-serif;
+$font-stack: Helvetica, sans-serif;
 $primary-color: #333;
 
 body {
   font: 100% $font-stack;
   color: $primary-color;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas#gameboard {
+  width: 500px;
+  height: 500px;
+  margin-top: 10%;
+}
+
+@media only screen and (max-width: 600px)  {
+  canvas#gameboard {
+    width: 80vw;
+    height: 80vw;
+  }
 }
 
