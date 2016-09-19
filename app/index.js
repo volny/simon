@@ -74,6 +74,9 @@ function activateQuarter(coordinates, deactivate) {
 
   drawLines();
 }
+
+let history = [];
+
 function handleClick(e) {
   const canvasWidth = canvas.offsetWidth;
   const x = e.pageX - canvas.offsetLeft;
@@ -82,19 +85,27 @@ function handleClick(e) {
   if (x < width / 2 && y < width /2) {
     activateQuarter('00');
     window.setTimeout(() => activateQuarter('00', true), 500);
+    history.push('00');
   } else if (x < width / 2 && y > width / 2) {
     activateQuarter('01');
     window.setTimeout(() => activateQuarter('01', true), 500);
+    history.push('01');
   } else if (x > width / 2 && y < width / 2) {
     activateQuarter('10');
     window.setTimeout(() => activateQuarter('10', true), 500);
+    history.push('10');
   } else if (x > width / 2 && y > width / 2) {
     activateQuarter('11');
     window.setTimeout(() => activateQuarter('11', true), 500);
+    history.push('11');
   }
 }
 
 canvas.addEventListener('click', handleClick, false);
+document.querySelector('#restart').addEventListener('click', () => {
+  drawBoard();
+  history = [];
+}, false)
 
 drawBoard();
 
