@@ -1,7 +1,7 @@
 {
-  "name": "es6-webpack-starter",
+  "name": "simon",
   "version": "1.0.0",
-  "description": "A simple starter template to write vanilla ES6 applications",
+  "description": "HTML5 Simon Game",
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,19 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/volny/ES6-webpack-starter.git"
+    "url": "git+https://github.com/volny/simon"
   },
-  "keywords": [
-    "ES6",
-    "webpack",
-    "SASS"
-  ],
   "author": "Felix Volny <felix@volny.co>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/volny/ES6-webpack-starter/issues"
+    "url": "https://github.com/volny/simon/issues"
   },
-  "homepage": "https://github.com/volny/ES6-webpack-starter#readme",
+  "homepage": "https://github.com/volny/simon#readme",
   "devDependencies": {
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
