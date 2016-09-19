@@ -8,9 +8,12 @@ const width = 500;
 const padding = 30;
 const lineWidth = 15;
 
+const backgroundColor = '#ecf0f1';
+const lineColor = '#d7dde1';
+
 function drawLines() {
   gb.lineWidth = lineWidth;
-  gb.strokeStyle = '#d7dde1';
+  gb.strokeStyle = lineColor;
 
   gb.beginPath();
   gb.moveTo(width / 2, padding);
@@ -25,12 +28,12 @@ function drawLines() {
 
 function drawDisks() {
   gb.beginPath();
-  gb.fillStyle = '#d7dde1';
+  gb.fillStyle = lineColor;
   gb.arc(width / 2, width / 2, width / 2 - padding + lineWidth, 0, 2 * Math.PI);
   gb.fill();
 
   gb.beginPath();
-  gb.fillStyle = '#ecf0f1';
+  gb.fillStyle = backgroundColor;
   gb.arc(width / 2, width / 2, width / 2 - padding, 0, 2 * Math.PI);
   gb.fill();
 }
@@ -53,25 +56,24 @@ function drawQuarter(start, end, color) {
   gb.fill();
 }
 
-function activateQuarter(coordinates) {
+function activateQuarter(coordinates, deactivate) {
   switch (coordinates) {
     case '00':
-      drawQuarter(Math.PI, Math.PI * (3/2), '#2ecc71');
+      drawQuarter(Math.PI, Math.PI * (3/2), deactivate ? backgroundColor : '#2ecc71');
       break;
     case '10':
-      drawQuarter(Math.PI * (3/2), Math.PI * 2, '#e74c3c');
+      drawQuarter(Math.PI * (3/2), Math.PI * 2, deactivate ? backgroundColor : '#e74c3c');
       break;
     case '01':
-      drawQuarter(Math.PI / 2, Math.PI, '#3498db');
+      drawQuarter(Math.PI / 2, Math.PI, deactivate ? backgroundColor : '#3498db');
       break;
     case '11':
-      drawQuarter(0, Math.PI / 2, '#f1c40f');
+      drawQuarter(0, Math.PI / 2, deactivate ? backgroundColor : '#f1c40f');
       break;
   }
 
   drawLines();
 }
-
 function handleClick(e) {
   const canvasWidth = canvas.offsetWidth;
   const x = e.pageX - canvas.offsetLeft;
@@ -79,24 +81,20 @@ function handleClick(e) {
 
   if (x < width / 2 && y < width /2) {
     activateQuarter('00');
-    window.setTimeout(drawBoard, 500);
+    window.setTimeout(() => activateQuarter('00', true), 500);
   } else if (x < width / 2 && y > width / 2) {
     activateQuarter('01');
-    window.setTimeout(drawBoard, 500);
+    window.setTimeout(() => activateQuarter('01', true), 500);
   } else if (x > width / 2 && y < width / 2) {
     activateQuarter('10');
-    window.setTimeout(drawBoard, 500);
+    window.setTimeout(() => activateQuarter('10', true), 500);
   } else if (x > width / 2 && y > width / 2) {
     activateQuarter('11');
-    window.setTimeout(drawBoard, 500);
+    window.setTimeout(() => activateQuarter('11', true), 500);
   }
 }
 
 canvas.addEventListener('click', handleClick, false);
 
 drawBoard();
-//activateQuarter('00');
-//activateQuarter('10');
-//activateQuarter('01');
-//activateQuarter('11');
 
