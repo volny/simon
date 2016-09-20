@@ -106,27 +106,29 @@ document.querySelector('#restart').addEventListener('click', () => {
   drawBoard();
   history = [];
 
-  play(sequence);
+  computersTurn(sequence);
 }, false)
 
 drawBoard();
 
 const sequence = ['10', '00', '00', '01', '10', '11', '00', '01'];
 
-function play(coords) {
-  var message = document.createElement("p");
+function showMessage(string, destroy = true) {
+  const message = document.createElement("p");
   message.className += "message animated zoomIn";
-  var text = document.createTextNode('Watch closely');
+  const text = document.createTextNode(string);
   message.appendChild(text);
-  document.body.insertBefore(message, canvas); 
-  window.setTimeout(() => {document.body.removeChild(message)}, 700)
-
-  playSequence(coords);
+  document.body.insertBefore(message, canvas);
+  if (destroy) {
+    window.setTimeout(() => {
+      document.body.removeChild(message);
+    }, 700)
+  }
 }
 
 function playSequence(coords) {
   if (coords.length === 0) {
-    document.querySelector('#message').textContent = '';
+    // TODO remove message
     return false;
   }
   window.setTimeout(() => {
@@ -136,5 +138,14 @@ function playSequence(coords) {
       playSequence(coords.slice(1, coords.length));
     }, 800) // light-up duration
   }, 300) // break between light-up
+}
+
+function computersTurn(coords) {
+  showMessage('Watch closely');
+
+  window.setTimeout(() => {
+    playSequence(coords);
+  }, 900)
+
 }
 
