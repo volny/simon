@@ -7,8 +7,27 @@ const canvas = {
   padding: 30,
   lineWidth: 15,
   backgroundColor: '#ecf0f1',
-  lineColor: '#d7dde1'
-}
+  lineColor: '#d7dde1',
+  drawLines,
+  drawDisks,
+  drawBoard,
+  drawQuarter,
+  activateQuarter,
+};
+
+const game = {
+  inputs: [],
+  sequence: [],
+  addToSequence,
+  gameOver,
+  checkClick,
+  handleClick,
+  showMessage,
+  playSequence,
+  playersTurn,
+  computersTurn,
+  restart
+};
 
 function drawLines() {
   canvas.context.lineWidth = canvas.lineWidth;
@@ -42,8 +61,8 @@ function drawBoard() {
   canvas.context.fillStyle = '#ffffff';
   canvas.context.fillRect(0, 0, canvas.width, canvas.width);
 
-  drawDisks();
-  drawLines();
+  canvas.drawDisks();
+  canvas.drawLines();
 }
 
 function drawQuarter(start, end, color) {
@@ -58,51 +77,46 @@ function drawQuarter(start, end, color) {
 function activateQuarter(coordinates, deactivate) {
   switch (coordinates) {
     case '00':
-      drawQuarter(Math.PI, Math.PI * (3/2), deactivate ? canvas.backgroundColor : '#2ecc71');
+      canvas.drawQuarter(Math.PI, Math.PI * (3/2), deactivate ? canvas.backgroundColor : '#2ecc71');
       break;
     case '10':
-      drawQuarter(Math.PI * (3/2), Math.PI * 2, deactivate ? canvas.backgroundColor : '#e74c3c');
+      canvas.drawQuarter(Math.PI * (3/2), Math.PI * 2, deactivate ? canvas.backgroundColor : '#e74c3c');
       break;
     case '01':
-      drawQuarter(Math.PI / 2, Math.PI, deactivate ? canvas.backgroundColor : '#3498db');
+      canvas.drawQuarter(Math.PI / 2, Math.PI, deactivate ? canvas.backgroundColor : '#3498db');
       break;
     case '11':
-      drawQuarter(0, Math.PI / 2, deactivate ? canvas.backgroundColor : '#f1c40f');
+      canvas.drawQuarter(0, Math.PI / 2, deactivate ? canvas.backgroundColor : '#f1c40f');
       break;
   }
 
-  drawLines();
+  canvas.drawLines();
 }
-
-let inputs = [];
-const sequence = []; //['10', '00'];//, '00', '01', '10', '11', '00', '01'];
 
 function addToSequence() {
   const coordinates = ['00', '01', '10', '11'];
-  sequence.push(coordinates[Math.floor(Math.random() * coordinates.length)]);
+  game.sequence.push(coordinates[Math.floor(Math.random() * coordinates.length)]);
 }
 
 function gameOver() {
-  canvas.dom.removeEventListener('click', handleClick, false);
-  showMessage('Game Over');
+  canvas.dom.removeEventListener('click', game.handleClick, false);
+  game.showMessage('Game Over');
   window.setTimeout(() => {
-    showMessage('Highscore: ' + parseInt(sequence.length - 1).toString(), false);
+    game.showMessage('Highscore: ' + parseInt(game.sequence.length - 1).toString(), false);
     document.querySelector('#restart').style.visibility = 'visible';
   }, 700);
 }
 
 function checkClick() {
-  console.debug('sequence:', sequence[inputs.length -1], 'input:', inputs[inputs.length -1]);
-
-  if (sequence[inputs.length -1] === inputs[inputs.length -1]) {
-    if (sequence.length === inputs.length) {
-      showMessage('Good Job!');
+  if (game.sequence[game.inputs.length -1] === game.inputs[game.inputs.length -1]) {
+    if (game.sequence.length === game.inputs.length) {
+      game.showMessage('Good Job!');
       window.setTimeout(() => {
-        computersTurn(sequence);
+        game.computersTurn(game.sequence);
       }, 700)
     }
   } else {
-    gameOver();
+    game.gameOver();
   }
 }
 
@@ -112,24 +126,24 @@ function handleClick(e) {
   const y = e.pageY - canvas.dom.offsetTop;
 
   if (x < canvas.width / 2 && y < canvas.width /2) {
-    activateQuarter('00');
-    window.setTimeout(() => activateQuarter('00', true), 500);
-    inputs.push('00');
+    canvas.activateQuarter('00');
+    window.setTimeout(() => canvas.activateQuarter('00', true), 500);
+    game.inputs.push('00');
   } else if (x < canvas.width / 2 && y > canvas.width / 2) {
-    activateQuarter('01');
-    window.setTimeout(() => activateQuarter('01', true), 500);
-    inputs.push('01');
+    canvas.activateQuarter('01');
+    window.setTimeout(() => canvas.activateQuarter('01', true), 500);
+    game.inputs.push('01');
   } else if (x > canvas.width / 2 && y < canvas.width / 2) {
-    activateQuarter('10');
-    window.setTimeout(() => activateQuarter('10', true), 500);
-    inputs.push('10');
+    canvas.activateQuarter('10');
+    window.setTimeout(() => canvas.activateQuarter('10', true), 500);
+    game.inputs.push('10');
   } else if (x > canvas.width / 2 && y > canvas.width / 2) {
-    activateQuarter('11');
-    window.setTimeout(() => activateQuarter('11', true), 500);
-    inputs.push('11');
+    canvas.activateQuarter('11');
+    window.setTimeout(() => canvas.activateQuarter('11', true), 500);
+    game.inputs.push('11');
   }
 
-  checkClick();
+  game.checkClick();
 }
 
 function showMessage(string, destroy = true) {
@@ -151,27 +165,26 @@ function playSequence(coords, callback) {
     return false;
   }
   window.setTimeout(() => {
-    activateQuarter(coords[0]);
+    canvas.activateQuarter(coords[0]);
     window.setTimeout(() => {
-      activateQuarter(coords[0], true);
-      playSequence(coords.slice(1, coords.length), callback);
+      canvas.activateQuarter(coords[0], true);
+      game.playSequence(coords.slice(1, coords.length), callback);
     }, 800) // light-up duration
   }, 300) // break between light-up
 }
 
 function playersTurn() {
-  showMessage('Your turn');
-  inputs = [];
-  // enable input
-  canvas.dom.addEventListener('click', handleClick, false);
+  game.showMessage('Your turn');
+  game.inputs = [];
+  canvas.dom.addEventListener('click', game.handleClick, false);
 }
 
 function computersTurn(coords) {
-  addToSequence();
-  canvas.dom.removeEventListener('click', handleClick, false);
-  showMessage('Watch closely');
+  game.addToSequence();
+  canvas.dom.removeEventListener('click', game.handleClick, false);
+  game.showMessage('Watch closely');
   window.setTimeout(() => {
-    playSequence(coords, playersTurn);
+    game.playSequence(coords, game.playersTurn);
   }, 900)
 }
 
@@ -179,16 +192,17 @@ function restart() {
   if (document.querySelector('.message')) {
     document.body.removeChild(document.querySelector('.message'));
   }
-  drawBoard();
-  computersTurn(sequence);
+  canvas.drawBoard();
+  game.sequence = [];
+  game.computersTurn(game.sequence);
 
   this.textContent = 'Restart';
   this.style.visibility = 'hidden';
 }
 
-document.querySelector('#restart').addEventListener('click', restart, false)
 
 window.onload = function() {
-  drawBoard();
+  canvas.drawBoard();
+  document.querySelector('#restart').addEventListener('click', game.restart, false)
 };
 
