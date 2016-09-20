@@ -23,6 +23,8 @@ canvas#gameboard {
   margin-top: 10%;
   width: 500px;
   height: 500px;
+  // fix mobile safari highlight on tapping
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 @media only screen and (max-width: 600px)  {
@@ -54,3 +56,4 @@ canvas#gameboard {
   font-size: 40px;
   font-weight: 700;
 }
+
