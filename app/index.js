@@ -109,3 +109,18 @@ document.querySelector('#restart').addEventListener('click', () => {
 
 drawBoard();
 
+const sequence = ['10', '00', '00', '01', '10', '11', '00', '01'];
+function playSequence(coords) {
+  if (coords.length === 0) {
+    return false;
+  }
+  window.setTimeout(() => {
+    activateQuarter(coords[0]);
+    window.setTimeout(() => {
+      activateQuarter(coords[0], true);
+      playSequence(coords.slice(1, coords.length));
+    }, 800) // light-up duration
+  }, 300) // break between light-up
+}
+
+playSequence(sequence);
