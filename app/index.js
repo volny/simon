@@ -105,13 +105,28 @@ canvas.addEventListener('click', handleClick, false);
 document.querySelector('#restart').addEventListener('click', () => {
   drawBoard();
   history = [];
+
+  play(sequence);
 }, false)
 
 drawBoard();
 
 const sequence = ['10', '00', '00', '01', '10', '11', '00', '01'];
+
+function play(coords) {
+  var message = document.createElement("p");
+  message.className += "message animated zoomIn";
+  var text = document.createTextNode('Watch closely');
+  message.appendChild(text);
+  document.body.insertBefore(message, canvas); 
+  window.setTimeout(() => {document.body.removeChild(message)}, 700)
+
+  playSequence(coords);
+}
+
 function playSequence(coords) {
   if (coords.length === 0) {
+    document.querySelector('#message').textContent = '';
     return false;
   }
   window.setTimeout(() => {
@@ -123,4 +138,3 @@ function playSequence(coords) {
   }, 300) // break between light-up
 }
 
-playSequence(sequence);
