@@ -75,7 +75,23 @@ function activateQuarter(coordinates, deactivate) {
   drawLines();
 }
 
-let history = [];
+let inputs = [];
+const sequence = ['10', '00'];//, '00', '01', '10', '11', '00', '01'];
+
+function checkClick() {
+  console.debug('sequence:', sequence[inputs.length -1], 'input:', inputs[inputs.length -1]);
+
+  if (sequence[inputs.length -1] === inputs[inputs.length -1]) {
+    console.log('correct input')
+  } else {
+    console.log('wrong input')
+    showMessage('Game Over');
+    window.setTimeout(() => {
+      showMessage('Highscore: ' + parseInt(inputs.length - 1).toString(), false);
+    }, 700)
+  }
+
+}
 
 function handleClick(e) {
   const canvasWidth = canvas.offsetWidth;
@@ -85,33 +101,39 @@ function handleClick(e) {
   if (x < width / 2 && y < width /2) {
     activateQuarter('00');
     window.setTimeout(() => activateQuarter('00', true), 500);
-    history.push('00');
+    inputs.push('00');
   } else if (x < width / 2 && y > width / 2) {
     activateQuarter('01');
     window.setTimeout(() => activateQuarter('01', true), 500);
-    history.push('01');
+    inputs.push('01');
   } else if (x > width / 2 && y < width / 2) {
     activateQuarter('10');
     window.setTimeout(() => activateQuarter('10', true), 500);
-    history.push('10');
+    inputs.push('10');
   } else if (x > width / 2 && y > width / 2) {
     activateQuarter('11');
     window.setTimeout(() => activateQuarter('11', true), 500);
-    history.push('11');
+    inputs.push('11');
   }
+
+  checkClick();
+
 }
 
 canvas.addEventListener('click', handleClick, false);
 document.querySelector('#restart').addEventListener('click', () => {
+  // remove gameover message
+  if (document.querySelector('.message')) {
+    document.body.removeChild(document.querySelector('.message'));
+  }
+
   drawBoard();
-  history = [];
 
   computersTurn(sequence);
 }, false)
 
 drawBoard();
 
-const sequence = ['10', '00', '00', '01', '10', '11', '00', '01'];
 
 function showMessage(string, destroy = true) {
   const message = document.createElement("p");
@@ -126,26 +148,30 @@ function showMessage(string, destroy = true) {
   }
 }
 
-function playSequence(coords) {
+function playSequence(coords, callback) {
   if (coords.length === 0) {
-    // TODO remove message
+    callback();
     return false;
   }
   window.setTimeout(() => {
     activateQuarter(coords[0]);
     window.setTimeout(() => {
       activateQuarter(coords[0], true);
-      playSequence(coords.slice(1, coords.length));
+      playSequence(coords.slice(1, coords.length), callback);
     }, 800) // light-up duration
   }, 300) // break between light-up
+}
+
+function playersTurn() {
+  showMessage('Your turn');
+  inputs = [];
 }
 
 function computersTurn(coords) {
   showMessage('Watch closely');
 
   window.setTimeout(() => {
-    playSequence(coords);
+    playSequence(coords, playersTurn);
   }, 900)
-
 }
 
