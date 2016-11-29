@@ -1,4 +1,5 @@
 import './style.scss';
+import Webfont from 'webfontloader';
 
 const canvas = {
   dom: document.querySelector('#gameboard'),
@@ -62,6 +63,12 @@ function drawCenter() {
   canvas.context.fillStyle = canvas.lineColor;
   canvas.context.arc(canvas.width / 2, canvas.width / 2, canvas.width / 4 - canvas.padding + canvas.lineWidth, 0, 2 * Math.PI);
   canvas.context.fill();
+
+  canvas.context.font = '45px Alfa Slab One';
+  canvas.context.textAlign = 'center';
+  canvas.context.textBaseline = 'middle';
+  canvas.context.fillStyle = canvas.backgroundColor;
+  canvas.context.fillText("Simon", canvas.width / 2 , canvas.width / 2);
 }
 
 function drawBoard() {
@@ -216,4 +223,14 @@ window.onload = function() {
   canvas.drawBoard();
   document.querySelector('#restart').addEventListener('click', game.restart, false)
 };
+
+// load the font
+Webfont.load({
+  google: {
+    families: ['Alfa Slab One']
+  },
+  active: function() {
+    drawCenter();
+  }
+});
 
