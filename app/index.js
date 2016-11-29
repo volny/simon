@@ -72,10 +72,6 @@ function drawCenter() {
 }
 
 function drawBoard() {
-  // paint over board
-  canvas.context.fillStyle = '#ffffff';
-  canvas.context.fillRect(0, 0, canvas.width, canvas.width);
-
   canvas.drawDisks();
   canvas.drawLines();
   canvas.drawCenter();
