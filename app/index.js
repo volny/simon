@@ -75,6 +75,7 @@ function drawQuarter(start, end, color) {
 }
 
 function activateQuarter(coordinates, deactivate) {
+  canvas.drawBoard();
   switch (coordinates) {
     case '00':
       canvas.drawQuarter(Math.PI, Math.PI * (3/2), deactivate ? canvas.backgroundColor : '#2ecc71');
