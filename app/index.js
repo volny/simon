@@ -7,9 +7,10 @@ const canvas = {
   padding: 30,
   lineWidth: 15,
   backgroundColor: '#ecf0f1',
-  lineColor: '#d7dde1',
+  lineColor: '#222222',
   drawLines,
   drawDisks,
+  drawCenter,
   drawBoard,
   drawQuarter,
   activateQuarter,
@@ -56,6 +57,13 @@ function drawDisks() {
   canvas.context.fill();
 }
 
+function drawCenter() {
+  canvas.context.beginPath();
+  canvas.context.fillStyle = canvas.lineColor;
+  canvas.context.arc(canvas.width / 2, canvas.width / 2, canvas.width / 4 - canvas.padding + canvas.lineWidth, 0, 2 * Math.PI);
+  canvas.context.fill();
+}
+
 function drawBoard() {
   // paint over board
   canvas.context.fillStyle = '#ffffff';
@@ -63,6 +71,7 @@ function drawBoard() {
 
   canvas.drawDisks();
   canvas.drawLines();
+  canvas.drawCenter();
 }
 
 function drawQuarter(start, end, color) {
@@ -92,6 +101,7 @@ function activateQuarter(coordinates, deactivate) {
   }
 
   canvas.drawLines();
+  canvas.drawCenter();
 }
 
 function addToSequence() {
