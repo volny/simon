@@ -21,14 +21,13 @@ body {
 }
 
 canvas#gameboard {
-  margin-top: 10%;
-  width: 500px;
-  height: 500px;
+  width: 700px;
+  height: 700px;
   // fix mobile safari highlight on tapping
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-@media only screen and (max-width: 600px)  {
+@media only screen and (max-width: 770px)  {
   canvas#gameboard {
     width: 95vw;
     height: 95vw;
@@ -38,7 +37,7 @@ canvas#gameboard {
 .gamebutton {
   color: #333;
   font-size: 25px;
-  font-family: 'Alfa Slab One', cursive;
+  font-family: 'Alfa Slab One', Helvetica, sans-serif;
   background-color: white;
   margin-bottom: 20px;
   padding: 8px 20px;
@@ -54,12 +53,11 @@ canvas#gameboard {
 
 .message {
   position: absolute;
+  bottom: 1.5rem;
   width: 100%;
-  top: 0;
-  left: 0;
   text-align: center;
   font-size: 40px;
-  font-family: 'Alfa Slab One', cursive;
+  font-family: 'Alfa Slab One', Helvetica, sans-serif;
   font-weight: 700;
 }
 

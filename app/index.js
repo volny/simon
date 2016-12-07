@@ -161,11 +161,12 @@ function handleClick(e) {
 }
 
 function showMessage(string, destroy = true) {
-  const message = document.createElement("p");
+  const message = document.createElement("span");
   message.className += "message animated zoomIn";
   const text = document.createTextNode(string);
   message.appendChild(text);
-  document.body.insertBefore(message, canvas.dom);
+  // null means add it to end of list
+  document.body.insertBefore(message, null);
   if (destroy) {
     window.setTimeout(() => {
       document.body.removeChild(message);
