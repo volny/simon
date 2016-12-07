@@ -116,9 +116,11 @@ function gameOver() {
   canvas.dom.removeEventListener('click', game.handleClick, false);
   game.showMessage('Game Over');
   window.setTimeout(() => {
-    game.showMessage('Highscore: ' + parseInt(game.sequence.length - 1).toString(), false);
-    document.querySelector('#restart').style.visibility = 'visible';
+    game.showMessage('Highscore: ' + parseInt(game.sequence.length - 1).toString(), 1200);
   }, 700);
+  window.setTimeout(() => {
+    document.querySelector('#restart').style.visibility = 'visible';
+  }, 2000);
 }
 
 function checkClick() {
@@ -160,18 +162,16 @@ function handleClick(e) {
   game.checkClick();
 }
 
-function showMessage(string, destroy = true) {
+function showMessage(string, delay = 700) {
   const message = document.createElement("span");
   message.className += "message animated zoomIn";
   const text = document.createTextNode(string);
   message.appendChild(text);
   // null means add it to end of list
   document.body.insertBefore(message, null);
-  if (destroy) {
     window.setTimeout(() => {
       document.body.removeChild(message);
-    }, 700)
-  }
+    }, delay)
 }
 
 function playSequence(coords, callback) {
